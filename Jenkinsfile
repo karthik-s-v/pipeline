@@ -2,16 +2,14 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'karthisrng/new'
+        DOCKER_IMAGE = 'chinnmayk/new'
     }
 
     stages {
         stage('Checkout') {
             steps {
-               withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
-    git branch: 'main', url: "https://${GIT_USER}:${GIT_PASS}@github.com/karthik-s-v/pipeline.git"
-}
-
+                withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    git branch: 'main', url: "https://${GIT_USER}:${GIT_PASS}@github.com/karthik-s-v/pipeline.git"
                 }
             }
         }
@@ -19,6 +17,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    // Use 'bat' for Windows
                     bat "docker build -t %DOCKER_IMAGE%:latest ."
                 }
             }
@@ -27,6 +26,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
+                    // Run Docker container and map ports
                     bat "docker run -d -p 8080:80 --name my-container %DOCKER_IMAGE%:latest"
                 }
             }
@@ -44,3 +44,4 @@ pipeline {
             echo 'Pipeline failed. Check logs.'
         }
     }
+}
