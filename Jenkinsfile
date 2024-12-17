@@ -24,13 +24,16 @@ pipeline {
         }
 
         stage('Run Docker Container') {
-            steps {
-                script {
-                    // Run Docker container and map ports
-                    bat "docker run -d -p 8080:80 --name my-container1 %DOCKER_IMAGE%:latest"
-                }
-            }
+    steps {
+        script {
+            bat '''
+            docker ps -a -q --filter "name=my-container1" | findstr . && docker rm -f my-container1 || echo "No container to remove"
+            docker run -d -p 9090:80 --name my-container1 karthisrng/new:latest
+            '''
         }
+    }
+}
+
     }
 
     post {
