@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     // Run Docker container and map ports
-                    bat "docker run -d -p 8080:80 --name my-container %DOCKER_IMAGE%:latest"
+                    bat "docker run -d -p 8080:80 --name my-container1 %DOCKER_IMAGE%:latest"
                 }
             }
         }
