@@ -8,7 +8,9 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/karthik-s-v/pipeline.git'
+                withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_PASS')]) {
+                    git branch: 'main', url: "https://${GIT_USER}:${GIT_PASS}@github.com/karthik-s-v/pipeline.git"
+                }
             }
         }
 
